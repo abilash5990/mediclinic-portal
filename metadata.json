@@ -1,0 +1,6 @@
+{
+  "name": "MediClinic Portal",
+  "description": "A modern and accessible medical website for doctor searching, custom appointment booking, medical report analysis, symptom scanning, and patient dashboards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
