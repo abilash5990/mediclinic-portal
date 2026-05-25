@@ -23,7 +23,9 @@ import {
   Clock,
   ArrowRight,
   Info,
-  FileText
+  FileText,
+  Sun,
+  Moon
 } from "lucide-react";
 
 import { Appointment, MedicalReport, Doctor } from "./types";
@@ -148,21 +150,23 @@ export default function App() {
   }, [activeTab]);
 
   return (
-    <div className={`min-h-screen ${primaryDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"} font-sans transition-all duration-300 pb-16`}>
+    <div className={`min-h-screen font-sans transition-all duration-300 pb-16 ${primaryDark ? "bg-slate-950 text-slate-100" : "bg-gradient-to-b from-slate-50 to-white text-slate-900"}`}>
       
-      {/* ⚠️ PATIENT SAFETY HEALTH BAR NOTIFICATION HEADER */}
-      <div className="bg-red-50 text-red-700 text-xs py-3 px-6 border-b border-red-100 select-none relative">
+      {/* PATIENT SAFETY HEALTH BAR */}
+      <div className={`text-xs py-2.5 px-6 border-b select-none ${
+        primaryDark ? "bg-red-950/40 text-red-300 border-red-900/30" : "bg-red-50/80 text-red-700 border-red-100"
+      }`}>
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 font-bold uppercase tracking-wider text-[11px]">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-650 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
             Immediate Medical Assistance
           </div>
-          <p className="text-[11px] font-medium leading-relaxed max-w-2xl text-red-800/90">
-            For critical respiratory distress, chest pains, or sudden motor dysfunction, please bypass virtual checking and call our 24/7 Priority Emergency response squad at <strong className="font-bold text-red-750">+1 (800) 555-9111</strong> immediately.
+          <p className={`text-[11px] font-medium leading-relaxed max-w-2xl ${primaryDark ? "text-red-300/80" : "text-red-800/90"}`}>
+            For critical emergencies, call our 24/7 Priority Emergency squad at <strong className="font-bold">+1 (800) 555-9111</strong>
           </p>
           <button
             onClick={() => setActiveTab("emergency")}
-            className="bg-red-500 hover:bg-red-600 text-white text-[10px] font-semibold px-4 py-1.5 rounded-full transition duration-150 cursor-pointer shadow-sm shadow-red-100"
+            className="bg-red-500 hover:bg-red-600 text-white text-[10px] font-semibold px-4 py-1.5 rounded-full transition duration-150 cursor-pointer shadow-sm"
           >
             Access Dispatch Hub
           </button>
@@ -170,24 +174,28 @@ export default function App() {
       </div>
 
       {/* CORE TOP STICKY NAVIGATION HEADER */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm shadow-slate-150/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
+      <header className={`sticky top-0 z-40 border-b backdrop-blur-xl transition-all duration-300 ${
+        primaryDark 
+          ? "bg-slate-900/90 border-slate-700/50 shadow-lg shadow-slate-950/20" 
+          : "bg-white/80 border-slate-200/60 shadow-sm shadow-blue-100/10"
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
           
-          {/* Logo Brand Branding */}
-          <button onClick={() => setActiveTab("home")} className="flex items-center gap-2 group cursor-pointer text-left">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white transition duration-200 shadow-sm shadow-blue-150">
+          {/* Logo Brand */}
+          <button onClick={() => setActiveTab("home")} className="flex items-center gap-2.5 group cursor-pointer text-left">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white transition duration-200 shadow-md shadow-blue-200/50 group-hover:shadow-lg group-hover:scale-105">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4"></path></svg>
             </div>
             <div>
-              <span className="text-xl font-bold tracking-tight text-slate-850 block leading-none">
+              <span className={`text-xl font-bold tracking-tight block leading-none ${primaryDark ? "text-white" : "text-slate-900"}`}>
                 NovaHealth
               </span>
-              <span className="text-[9px] text-slate-400 font-bold tracking-widest uppercase mt-0.5 block">MediClinic</span>
+              <span className={`text-[9px] font-bold tracking-widest uppercase mt-0.5 block ${primaryDark ? "text-blue-400" : "text-blue-600"}`}>MediClinic</span>
             </div>
           </button>
 
           {/* Desktop Links Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-1">
             {[
               { id: "home", label: "Home" },
               { id: "doctors", label: "Doctors" },
@@ -202,10 +210,14 @@ export default function App() {
                   setInitialSpecialtyFilter("");
                   setActiveTab(tab.id as any);
                 }}
-                className={`text-sm font-semibold transition duration-150 cursor-pointer py-1 ${
+                className={`text-sm font-semibold transition duration-200 cursor-pointer px-3.5 py-2 rounded-lg ${
                   activeTab === tab.id
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-slate-500 hover:text-blue-600"
+                    ? primaryDark 
+                      ? "text-blue-400 bg-blue-500/10" 
+                      : "text-blue-700 bg-blue-50"
+                    : primaryDark
+                      ? "text-slate-400 hover:text-blue-300 hover:bg-slate-800"
+                      : "text-slate-500 hover:text-blue-700 hover:bg-blue-50/50"
                 }`}
               >
                 {tab.label}
@@ -213,16 +225,15 @@ export default function App() {
             ))}
           </nav>
 
-          {/* Practical action utility controls */}
-          <div className="flex items-center gap-4">
+          {/* Action utility controls */}
+          <div className="flex items-center gap-3">
             
             {/* Language Selection */}
-            <div className="hidden sm:block text-xs font-medium text-slate-450 border-r border-slate-200 pr-4">
-              <span className="text-slate-400">Language: </span>
+            <div className={`hidden sm:block text-xs font-medium border-r pr-3 ${primaryDark ? "border-slate-700 text-slate-400" : "border-slate-200 text-slate-450"}`}>
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="bg-transparent font-bold text-slate-705 outline-none cursor-pointer hover:text-slate-900"
+                className={`bg-transparent font-bold outline-none cursor-pointer ${primaryDark ? "text-slate-300 hover:text-white" : "text-slate-600 hover:text-slate-900"}`}
               >
                 <option value="English">EN</option>
                 <option value="Español">ES</option>
@@ -230,25 +241,46 @@ export default function App() {
               </select>
             </div>
 
+            {/* Theme Toggle */}
+            <button
+              onClick={() => setPrimaryDark(!primaryDark)}
+              className={`relative w-14 h-7 rounded-full transition-all duration-300 cursor-pointer ${
+                primaryDark ? "bg-slate-700" : "bg-gradient-to-r from-blue-100 to-indigo-100"
+              }`}
+              title={primaryDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              <span className={`absolute top-0.5 w-6 h-6 rounded-full transition-all duration-300 flex items-center justify-center shadow-sm ${
+                primaryDark ? "translate-x-7 bg-slate-800 shadow-slate-900" : "translate-x-0.5 bg-white shadow-blue-200"
+              }`}>
+                {primaryDark ? <Moon className="w-3.5 h-3.5 text-blue-400" /> : <Sun className="w-3.5 h-3.5 text-amber-500" />}
+              </span>
+            </button>
+
             {/* Notification triggers */}
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2.5 bg-slate-50 text-slate-550 border border-slate-200 rounded-xl hover:text-slate-800 transition relative cursor-pointer"
+                className={`p-2.5 border rounded-xl transition relative cursor-pointer ${
+                  primaryDark 
+                    ? "bg-slate-800 text-slate-300 border-slate-700 hover:text-white hover:bg-slate-700" 
+                    : "bg-white text-slate-500 border-slate-200 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50/50"
+                }`}
               >
                 <Bell className="w-4 h-4" />
                 {notifications.some(n => n.unread) && (
-                  <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-blue-600 rounded-full" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-blue-500 rounded-full ring-2 ring-white" />
                 )}
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-2.5 w-72 bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden z-50 text-xs animate-fadeIn text-slate-700">
-                  <div className="p-3 bg-slate-50 border-b border-slate-150 flex justify-between font-bold text-slate-650">
+                <div className={`absolute right-0 mt-2.5 w-72 rounded-2xl border shadow-xl overflow-hidden z-50 text-xs animate-fadeIn ${
+                  primaryDark ? "bg-slate-800 border-slate-700 text-slate-200" : "bg-white border-slate-200 text-slate-700"
+                }`}>
+                  <div className={`p-3 border-b flex justify-between font-bold ${primaryDark ? "bg-slate-900 border-slate-700 text-slate-200" : "bg-slate-50 border-slate-150 text-slate-650"}`}>
                     <span>Clinical Notifications</span>
                     <button
                       onClick={() => setNotifications(notifications.map(n => ({ ...n, unread: false })))}
-                      className="text-[10px] text-blue-600 hover:underline cursor-pointer"
+                      className="text-[10px] text-blue-500 hover:underline cursor-pointer"
                     >
                       Clear alerts
                     </button>
@@ -257,7 +289,11 @@ export default function App() {
                     {notifications.map((not) => (
                       <div
                         key={not.id}
-                        className={`p-3 border-b border-slate-100 flex gap-2 last:border-0 ${not.unread ? "bg-blue-50/20" : ""}`}
+                        className={`p-3 border-b flex gap-2 last:border-0 ${
+                          primaryDark 
+                            ? `border-slate-700 ${not.unread ? "bg-blue-500/5" : ""}` 
+                            : `border-slate-100 ${not.unread ? "bg-blue-50/30" : ""}`
+                        }`}
                       >
                         <span className="text-blue-500 font-bold">•</span>
                         <p className="leading-snug">{not.text}</p>
@@ -271,13 +307,13 @@ export default function App() {
               )}
             </div>
 
-            {/* Primary Action Hero Trigger - Patient Portal */}
+            {/* Patient Portal Button */}
             <button
               onClick={() => {
                 setInitialSpecialtyFilter("");
                 setActiveTab("dashboard");
               }}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm px-5 py-2.5 rounded-full transition duration-150 cursor-pointer shadow-sm shadow-slate-250"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-5 py-2.5 rounded-full transition duration-200 cursor-pointer shadow-md shadow-blue-200/40 hover:shadow-lg hover:shadow-blue-300/40"
             >
               Patient Portal
             </button>
@@ -287,130 +323,159 @@ export default function App() {
       </header>
 
       {/* RENDER ACTIVE TAB / PORTAL VIEW */}
-      <main className="max-w-7xl mx-auto px-4 md:px-8 mt-8">
+      <main className="max-w-7xl mx-auto px-4 md:px-8 mt-10">
         
         {/* TAB 1: LANDING OVERVIEW HOME PAGE */}
         {activeTab === "home" && (
           <div className="space-y-12 animate-fadeIn">
             
-            {/* HERO SECTION (First Screen Title) */}
-            <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center bg-white p-8 md:p-12 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden">
-              <div className="lg:col-span-7 space-y-6">
+            {/* HERO SECTION */}
+            <section className={`grid grid-cols-1 lg:grid-cols-12 gap-10 items-center p-8 md:p-12 rounded-[2.5rem] border relative overflow-hidden ${
+              primaryDark 
+                ? "bg-slate-900 border-slate-700/50 shadow-lg shadow-slate-950/30" 
+                : "bg-gradient-to-br from-white via-white to-blue-50/40 border-blue-100/60 shadow-sm shadow-blue-50"
+            }`}>
+              {/* Decorative gradient orb */}
+              {!primaryDark && <div className="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-blue-200/20 to-indigo-200/20 rounded-full blur-3xl pointer-events-none" />}
+              
+              <div className="lg:col-span-7 space-y-6 relative">
                 
-                {/* Visual badge highlight */}
-                <div className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-widest rounded-md">
+                {/* Visual badge */}
+                <div className={`inline-block px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest rounded-full ${
+                  primaryDark ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : "bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-100"
+                }`}>
                   Next-Gen Healthcare
                 </div>
 
-                <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 leading-[1.1] tracking-tight">
-                  Expert care, <br /><span className="text-blue-600">simplified.</span>
+                <h1 className={`text-5xl md:text-6xl font-extrabold leading-[1.08] tracking-tight ${primaryDark ? "text-white" : ""}`}>
+                  {primaryDark ? (
+                    <>Expert care, <br /><span className="text-blue-400">simplified.</span></>
+                  ) : (
+                    <>Expert care, <br /><span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">simplified.</span></>
+                  )}
                 </h1>
                 
-                <p className="text-base md:text-lg text-slate-500 leading-relaxed max-w-lg">
-                  Book top-rated specialists, access diagnostic records, and consult with certified hospital clinicians online — all in one unified, professional platform.
+                <p className={`text-base md:text-lg leading-relaxed max-w-lg ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>
+                  Book top-rated specialists, access diagnostic records, and consult with certified hospital clinicians online — all in one unified platform.
                 </p>
 
-                {/* Practical Hero Buttons */}
+                {/* Hero Buttons */}
                 <div className="flex flex-wrap gap-3 pt-2">
                   <button
                     onClick={() => {
                       setInitialSpecialtyFilter("");
                       setActiveTab("doctors");
                     }}
-                    className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl transition duration-150 cursor-pointer shadow-lg shadow-blue-200/50 flex items-center gap-2"
+                    className="px-7 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm rounded-xl transition duration-200 cursor-pointer shadow-lg shadow-blue-200/50 flex items-center gap-2 hover:shadow-xl hover:scale-[1.02]"
                   >
-                    Book In-Person Appointment <ArrowRight className="w-4 h-4" />
+                    Book Appointment <ArrowRight className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => {
                       setInitialSpecialtyFilter("");
                       setActiveTab("doctors");
                     }}
-                    className="px-6 py-4 bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 font-bold text-sm rounded-xl transition duration-150 cursor-pointer flex items-center gap-2"
+                    className={`px-6 py-3.5 border font-bold text-sm rounded-xl transition duration-200 cursor-pointer flex items-center gap-2 hover:scale-[1.02] ${
+                      primaryDark 
+                        ? "bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700" 
+                        : "bg-white border-slate-200 text-slate-600 hover:bg-blue-50 hover:border-blue-200"
+                    }`}
                   >
-                    <Video className="w-4 h-4 text-blue-600" /> Video Telemedicine Consult
+                    <Video className="w-4 h-4 text-blue-500" /> Video Consult
                   </button>
                   <button
                     onClick={() => setActiveTab("emergency")}
-                    className="px-6 py-4 bg-red-50 border border-red-200 text-red-650 hover:bg-red-100/50 font-bold text-sm rounded-xl transition duration-150 cursor-pointer flex items-center gap-1.5"
+                    className={`px-6 py-3.5 border font-bold text-sm rounded-xl transition duration-200 cursor-pointer flex items-center gap-1.5 ${
+                      primaryDark ? "bg-red-950/30 border-red-800/40 text-red-400 hover:bg-red-900/30" : "bg-red-50 border-red-200 text-red-600 hover:bg-red-100/50"
+                    }`}
                   >
-                    Emergency Help Center
+                    Emergency Help
                   </button>
                 </div>
 
-                {/* Trust stats highlights */}
-                <div className="grid grid-cols-3 gap-4 pt-6 border-t border-slate-150/60 max-w-md">
+                {/* Trust stats */}
+                <div className={`grid grid-cols-3 gap-4 pt-6 border-t max-w-md ${primaryDark ? "border-slate-700/50" : "border-blue-100/60"}`}>
                   <div>
-                    <span className="text-2xl font-bold text-slate-900 block">45,000+</span>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Patients Treated</span>
+                    <span className={`text-2xl font-bold block ${primaryDark ? "text-white" : "text-slate-900"}`}>45,000+</span>
+                    <span className={`text-[10px] uppercase font-bold tracking-wider ${primaryDark ? "text-slate-500" : "text-blue-400"}`}>Patients Treated</span>
                   </div>
                   <div>
-                    <span className="text-2xl font-bold text-slate-900 block">4.92 / 5</span>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Patient Rating</span>
+                    <span className={`text-2xl font-bold block ${primaryDark ? "text-white" : "text-slate-900"}`}>4.92 / 5</span>
+                    <span className={`text-[10px] uppercase font-bold tracking-wider ${primaryDark ? "text-slate-500" : "text-indigo-400"}`}>Patient Rating</span>
                   </div>
                   <div>
-                    <span className="text-2xl font-bold text-slate-900 block">18 mins</span>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Avg Response Time</span>
+                    <span className={`text-2xl font-bold block ${primaryDark ? "text-white" : "text-slate-900"}`}>18 mins</span>
+                    <span className={`text-[10px] uppercase font-bold tracking-wider ${primaryDark ? "text-slate-500" : "text-purple-400"}`}>Avg Response</span>
                   </div>
                 </div>
 
               </div>
 
-              {/* Banner Clinic illustration representation placeholder with doctor images */}
+              {/* Banner image */}
               <div className="lg:col-span-5 relative flex justify-center">
-                <div className="relative w-full max-w-[340px] aspect-square rounded-[2rem] overflow-hidden border-4 border-slate-200 shadow-xl bg-slate-100 grayscale-[20%] contrast-110">
+                <div className={`relative w-full max-w-[340px] aspect-square rounded-[2rem] overflow-hidden border-4 shadow-xl ${
+                  primaryDark ? "border-slate-700 bg-slate-800" : "border-blue-100 bg-slate-100"
+                }`}>
                   <img
                     src="https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&q=80&w=400"
                     alt="Modern Medical Clinic"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-slate-950/80 p-4 text-center text-white backdrop-blur-xs select-none">
-                    <p className="font-bold text-xs leading-tight text-slate-100">Medicare Premium Outposts Wing 3</p>
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 to-transparent p-5 text-center text-white select-none">
+                    <p className="font-bold text-xs leading-tight text-white/90">Medicare Premium Outposts Wing 3</p>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* AI SERVICES HIGHLIGHT MODULES CARDS */}
+            {/* AI SERVICES CARDS */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
-              <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-xs space-y-4">
+              <div className={`p-8 rounded-[2rem] border space-y-4 transition-all duration-200 hover:scale-[1.01] hover:shadow-md ${
+                primaryDark 
+                  ? "bg-slate-900 border-slate-700/50 hover:shadow-slate-950/30" 
+                  : "bg-gradient-to-br from-white to-blue-50/20 border-blue-100/60 hover:shadow-blue-100/40"
+              }`}>
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
+                  <div className={`p-2.5 rounded-xl ${primaryDark ? "bg-blue-500/10 text-blue-400" : "bg-blue-100/60 text-blue-600"}`}>
                     <Activity className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-slate-905">AI-Triage Symptom Checking</h3>
-                    <p className="text-xs text-slate-400">Describe physical state to see recommended medical pipelines.</p>
+                    <h3 className={`text-base font-bold ${primaryDark ? "text-white" : "text-blue-800"}`}>AI-Triage Symptom Checking</h3>
+                    <p className={`text-xs ${primaryDark ? "text-slate-500" : "text-slate-400"}`}>Describe symptoms to get specialist recommendations.</p>
                   </div>
                 </div>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Understand your health trends with non-diagnostic sorting checklists. Find out which medical board fits your conditions and construct custom questions to ask your healthcare advisor.
+                <p className={`text-xs leading-relaxed ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>
+                  Understand your health trends with non-diagnostic sorting checklists. Find out which medical board fits your conditions and construct custom questions for your advisor.
                 </p>
                 <button
                   onClick={() => setActiveTab("symptoms")}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:underline cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-blue-600 hover:underline cursor-pointer transition"
                 >
                   Load Symptom Checker <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
 
-              <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-xs space-y-4">
+              <div className={`p-8 rounded-[2rem] border space-y-4 transition-all duration-200 hover:scale-[1.01] hover:shadow-md ${
+                primaryDark 
+                  ? "bg-slate-900 border-slate-700/50 hover:shadow-slate-950/30" 
+                  : "bg-gradient-to-br from-white to-indigo-50/20 border-indigo-100/60 hover:shadow-indigo-100/40"
+              }`}>
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-slate-50 text-slate-600 rounded-xl">
+                  <div className={`p-2.5 rounded-xl ${primaryDark ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-100/60 text-indigo-600"}`}>
                     <FileText className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-slate-905">Plain-English Laboratory Reader</h3>
-                    <p className="text-xs text-slate-400">Simplify complex endocrine, metabolic & lipid files instantly.</p>
+                    <h3 className={`text-base font-bold ${primaryDark ? "text-white" : "text-indigo-800"}`}>Plain-English Lab Reader</h3>
+                    <p className={`text-xs ${primaryDark ? "text-slate-500" : "text-slate-400"}`}>Simplify complex medical reports instantly.</p>
                   </div>
                 </div>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Confused by chemical abbreviation lists or high blood count printouts? Upload or drag PDF logs of your metrics to trigger a clear list of indicators and proactive health rules.
+                <p className={`text-xs leading-relaxed ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>
+                  Confused by chemical abbreviation lists or blood count printouts? Upload PDF logs to trigger a clear list of indicators and proactive health rules.
                 </p>
                 <button
                   onClick={() => setActiveTab("labs")}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-650 hover:underline cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-500 hover:text-indigo-600 hover:underline cursor-pointer transition"
                 >
                   Load Lab Explainer <ArrowRight className="w-3.5 h-3.5" />
                 </button>
@@ -419,12 +484,12 @@ export default function App() {
             </section>
 
 
-            {/* SPECIALIZATIONS DEPARTMENTS GRID (Section 3) */}
+            {/* SPECIALIZATIONS DEPARTMENTS GRID */}
             <section className="space-y-6">
               <div className="text-center max-w-xl mx-auto space-y-2">
-                <h2 className="text-2xl font-bold text-slate-800">Our Clinical Departments</h2>
-                <p className="text-sm text-slate-500">
-                  Select key physical sections below to trigger direct medical matching algorithms or explore practitioners ready in those fields.
+                <h2 className={`text-2xl font-bold ${primaryDark ? "text-white" : "text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-700"}`}>Our Clinical Departments</h2>
+                <p className={`text-sm ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>
+                  Select a department to find specialists or explore practitioners in those fields.
                 </p>
               </div>
 
@@ -433,9 +498,15 @@ export default function App() {
                   <button
                     key={dept.id}
                     onClick={() => jumpToDepartmentDoctors(dept.name)}
-                    className="p-5 bg-white hover:bg-blue-50/50 border border-slate-150 hover:border-blue-300 rounded-2xl transition duration-150 text-center select-none cursor-pointer flex flex-col justify-center items-center group"
+                    className={`p-5 border rounded-2xl transition-all duration-200 text-center select-none cursor-pointer flex flex-col justify-center items-center group hover:scale-[1.04] hover:shadow-md ${
+                      primaryDark 
+                        ? "bg-slate-900 border-slate-700/50 hover:border-blue-500/30 hover:bg-slate-800 hover:shadow-blue-500/5" 
+                        : "bg-white border-blue-100/60 hover:border-blue-300 hover:bg-blue-50/30 hover:shadow-blue-100/40"
+                    }`}
                   >
-                    <div className="p-2.5 bg-slate-50 group-hover:bg-blue-100 text-blue-600 rounded-xl mb-3.5 transition">
+                    <div className={`p-2.5 rounded-xl mb-3.5 transition ${
+                      primaryDark ? "bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20" : "bg-blue-50 group-hover:bg-blue-100 text-blue-600"
+                    }`}>
                       {dept.name === "Cardiology" && <Heart className="w-5 h-5" />}
                       {dept.name === "Pediatrics" && <Baby className="w-5 h-5" />}
                       {dept.name === "Dermatology" && <Sparkles className="w-5 h-5" />}
@@ -443,8 +514,10 @@ export default function App() {
                       {dept.name === "Orthopedics" && <Bone className="w-5 h-5" />}
                       {dept.name === "Ophthalmology" && <Eye className="w-5 h-5" />}
                     </div>
-                    <span className="text-xs font-bold text-slate-800 block">{dept.name}</span>
-                    <span className="text-[9px] text-slate-400 mt-1 block group-hover:text-blue-600 font-medium font-mono">
+                    <span className={`text-xs font-bold block ${primaryDark ? "text-slate-200" : "text-slate-800"}`}>{dept.name}</span>
+                    <span className={`text-[9px] mt-1 block font-medium transition ${
+                      primaryDark ? "text-slate-500 group-hover:text-blue-400" : "text-slate-400 group-hover:text-blue-600"
+                    }`}>
                       Schedule Check
                     </span>
                   </button>
@@ -452,19 +525,19 @@ export default function App() {
               </div>
             </section>
 
-            {/* TOP FEATURED DOCTORS SUMMARY LIST (Section 5) */}
-            <section className="space-y-6 bg-slate-50 py-5 rounded-2xl">
+            {/* FEATURED DOCTORS */}
+            <section className={`space-y-6 py-8 px-6 rounded-3xl ${primaryDark ? "bg-slate-900/50" : "bg-gradient-to-br from-slate-50 to-blue-50/30"}`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-800">Featured On-Call Medical Board</h2>
-                  <p className="text-xs text-slate-500">Board-certified specialists with high response metrics.</p>
+                  <h2 className={`text-xl font-bold ${primaryDark ? "text-white" : "text-indigo-700"}`}>Featured On-Call Medical Board</h2>
+                  <p className={`text-xs ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>Board-certified specialists with high response metrics.</p>
                 </div>
                 <button
                   onClick={() => {
                     setInitialSpecialtyFilter("");
                     setActiveTab("doctors");
                   }}
-                  className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1 cursor-pointer"
+                  className="text-xs font-bold text-blue-500 hover:text-blue-600 hover:underline flex items-center gap-1 cursor-pointer transition"
                 >
                   View Directory <ArrowRight className="w-3.5 h-3.5" />
                 </button>
@@ -474,33 +547,39 @@ export default function App() {
                 {DOCTORS.slice(0, 3).map((doc) => (
                   <div
                     key={doc.id}
-                    className="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between"
+                    className={`border p-5 rounded-2xl flex flex-col justify-between transition-all duration-200 hover:scale-[1.02] hover:shadow-md ${
+                      primaryDark 
+                        ? "bg-slate-800 border-slate-700/50 hover:shadow-slate-950/20" 
+                        : "bg-white border-blue-100/60 hover:shadow-blue-100/40"
+                    }`}
                   >
                     <div>
                       <div className="flex items-center gap-3.5 mb-3.5">
-                        <img src={doc.avatar} alt={doc.name} className="w-12 h-12 rounded-xl object-cover" />
+                        <img src={doc.avatar} alt={doc.name} className="w-12 h-12 rounded-xl object-cover shadow-sm" />
                         <div>
-                          <span className="text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-bold uppercase">
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                            primaryDark ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-700"
+                          }`}>
                             {doc.specialty}
                           </span>
-                          <h4 className="font-bold text-sm text-slate-800 mt-1">{doc.name}</h4>
-                          <p className="text-xs text-slate-400">{doc.title}</p>
+                          <h4 className={`font-bold text-sm mt-1 ${primaryDark ? "text-white" : "text-slate-800"}`}>{doc.name}</h4>
+                          <p className={`text-xs ${primaryDark ? "text-slate-500" : "text-slate-400"}`}>{doc.title}</p>
                         </div>
                       </div>
                       
-                      <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4">
+                      <p className={`text-xs line-clamp-2 leading-relaxed mb-4 ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>
                         {doc.about}
                       </p>
                     </div>
 
-                    <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <span className="font-bold text-slate-800">${doc.fee} base fee</span>
+                    <div className={`pt-3.5 border-t flex items-center justify-between text-xs ${primaryDark ? "border-slate-700" : "border-blue-50"}`}>
+                      <span className={`font-bold ${primaryDark ? "text-slate-200" : "text-slate-800"}`}>${doc.fee} base fee</span>
                       <button
                         onClick={() => {
                           setInitialSpecialtyFilter(doc.specialty);
                           setActiveTab("doctors");
                         }}
-                        className="text-blue-605 font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
+                        className="text-blue-500 font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
                       >
                         Book Slot
                       </button>
@@ -510,52 +589,63 @@ export default function App() {
               </div>
             </section>
 
-            {/* TESTIMONIALS & CLINIC INDICATORS (Section 10) */}
-            <section className="bg-slate-50 border border-slate-200/80 rounded-[2.5rem] p-8 md:p-12 shadow-sm grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            {/* TESTIMONIALS */}
+            <section className={`rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-center border ${
+              primaryDark 
+                ? "bg-slate-900 border-slate-700/50 shadow-lg shadow-slate-950/20" 
+                : "bg-gradient-to-br from-slate-50 to-indigo-50/30 border-indigo-100/40 shadow-sm"
+            }`}>
               <div className="md:col-span-12 lg:col-span-5 space-y-4">
-                <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-[10px] font-bold uppercase px-3 py-1 rounded-full border border-blue-100">
+                <div className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase px-3 py-1.5 rounded-full border ${
+                  primaryDark ? "bg-blue-500/10 text-blue-400 border-blue-500/20" : "bg-blue-50 text-blue-700 border-blue-100"
+                }`}>
                   <Star className="w-3.5 h-3.5 fill-current" /> Patient Satisfaction
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-slate-900">
+                <h3 className={`text-2xl md:text-3xl font-bold tracking-tight leading-tight ${
+                  primaryDark ? "text-white" : "text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-indigo-800"
+                }`}>
                   What our patients say about NovaHealth
                 </h3>
-                <p className="text-xs text-slate-550 leading-relaxed">
+                <p className={`text-xs leading-relaxed ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>
                   Hear from thousands of patients who secured proactive consultations, simplified lab results, and scheduled treatments.
                 </p>
-                <div className="pt-4 border-t border-slate-200 flex gap-6">
+                <div className={`pt-4 border-t flex gap-6 ${primaryDark ? "border-slate-700" : "border-indigo-100/60"}`}>
                   <div>
-                    <span className="text-2xl font-bold text-slate-900 block leading-none">4.92 / 5</span>
-                    <span className="text-[9px] uppercase font-bold text-slate-400 mt-1 block tracking-wider">Google Rating</span>
+                    <span className={`text-2xl font-bold block leading-none ${primaryDark ? "text-white" : "text-slate-900"}`}>4.92 / 5</span>
+                    <span className={`text-[9px] uppercase font-bold mt-1 block tracking-wider ${primaryDark ? "text-slate-500" : "text-blue-400"}`}>Google Rating</span>
                   </div>
                   <div>
-                    <span className="text-2xl font-bold text-slate-900 block leading-none">99.2%</span>
-                    <span className="text-[9px] uppercase font-bold text-slate-400 mt-1 block tracking-wider">Resolution Rate</span>
+                    <span className={`text-2xl font-bold block leading-none ${primaryDark ? "text-white" : "text-slate-900"}`}>99.2%</span>
+                    <span className={`text-[9px] uppercase font-bold mt-1 block tracking-wider ${primaryDark ? "text-slate-500" : "text-indigo-400"}`}>Resolution Rate</span>
                   </div>
                 </div>
               </div>
 
-              <div className="lg:col-span-1 border-r border-slate-200 h-full hidden lg:block"></div>
+              <div className={`lg:col-span-1 border-r h-full hidden lg:block ${primaryDark ? "border-slate-700" : "border-indigo-100/60"}`}></div>
 
-              {/* Quotes loop */}
               <div className="md:col-span-12 lg:col-span-6 space-y-4 text-xs">
-                <div className="bg-white p-5 rounded-2xl border border-slate-200 italic shadow-xs text-slate-650">
+                <div className={`p-5 rounded-2xl border italic ${
+                  primaryDark ? "bg-slate-800 border-slate-700 text-slate-300" : "bg-white border-blue-100/60 text-slate-600 shadow-sm shadow-blue-50"
+                }`}>
                   &ldquo;This portal completely changed how I track child development records. Uploading local pediatrician records translates them into clear outlines in 15 seconds. Incredible accessibility.&rdquo;
-                  <span className="block not-italic font-bold text-[11px] text-slate-900 mt-2">— Sarah K., Mother of 2</span>
+                  <span className={`block not-italic font-bold text-[11px] mt-2 ${primaryDark ? "text-white" : "text-slate-900"}`}>— Sarah K., Mother of 2</span>
                 </div>
-                <div className="bg-white p-5 rounded-2xl border border-slate-200 italic shadow-xs text-slate-650">
+                <div className={`p-5 rounded-2xl border italic ${
+                  primaryDark ? "bg-slate-800 border-slate-700 text-slate-300" : "bg-white border-blue-100/60 text-slate-600 shadow-sm shadow-blue-50"
+                }`}>
                   &ldquo;Booking cardiac screens previously meant waiting on administrative switchboard holdups. Now I select Dr Vance, secure a telehealth slot, and log my lipids automatically.&rdquo;
-                  <span className="block not-italic font-bold text-[11px] text-slate-900 mt-2">— Thomas M., Cardiology Patient</span>
+                  <span className={`block not-italic font-bold text-[11px] mt-2 ${primaryDark ? "text-white" : "text-slate-900"}`}>— Thomas M., Cardiology Patient</span>
                 </div>
               </div>
             </section>
 
 
-            {/* HEALTH BLOG & WELLNESS ADVISOR (Section 9) */}
+            {/* HEALTH BLOG */}
             <section className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-800">SEO Health Guide & Doctor Guidelines</h2>
-                  <p className="text-xs text-slate-500">Everyday physical insights from board-certified clinicians.</p>
+                  <h2 className={`text-xl font-bold ${primaryDark ? "text-white" : "text-purple-700"}`}>Health Guide & Doctor Guidelines</h2>
+                  <p className={`text-xs ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>Everyday physical insights from board-certified clinicians.</p>
                 </div>
               </div>
 
@@ -563,25 +653,29 @@ export default function App() {
                 {BLOG_ARTICLES.map((art) => (
                   <div
                     key={art.id}
-                    className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between"
+                    className={`border rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-200 hover:scale-[1.02] hover:shadow-lg ${
+                      primaryDark 
+                        ? "bg-slate-900 border-slate-700/50 hover:shadow-slate-950/20" 
+                        : "bg-white border-blue-100/40 hover:shadow-blue-100/30"
+                    }`}
                   >
                     <div>
                       <img src={art.image} alt={art.title} className="w-full h-44 object-cover" />
                       <div className="p-4.5 space-y-2">
-                        <div className="flex items-center justify-between text-[10px] text-blue-600 font-bold uppercase tracking-wider">
-                          <span>{art.category}</span>
-                          <span className="text-slate-400 font-mono">{art.readTime}</span>
+                        <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
+                          <span className="text-blue-500">{art.category}</span>
+                          <span className={`font-mono ${primaryDark ? "text-slate-500" : "text-slate-400"}`}>{art.readTime}</span>
                         </div>
-                        <h4 className="font-bold text-sm text-slate-850 line-clamp-2">{art.title}</h4>
-                        <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed">{art.summary}</p>
+                        <h4 className={`font-bold text-sm line-clamp-2 ${primaryDark ? "text-white" : "text-slate-800"}`}>{art.title}</h4>
+                        <p className={`text-xs line-clamp-3 leading-relaxed ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>{art.summary}</p>
                       </div>
                     </div>
 
-                    <div className="p-4.5 border-t border-slate-100 flex items-center gap-3">
-                      <img src={art.author.avatar} alt={art.author.name} className="w-8 h-8 rounded-full object-cover border" />
+                    <div className={`p-4.5 border-t flex items-center gap-3 ${primaryDark ? "border-slate-700" : "border-blue-50"}`}>
+                      <img src={art.author.avatar} alt={art.author.name} className="w-8 h-8 rounded-full object-cover border border-slate-200" />
                       <div>
-                        <p className="text-xs font-bold text-slate-800">{art.author.name}</p>
-                        <p className="text-[10px] text-slate-400">{art.author.role}</p>
+                        <p className={`text-xs font-bold ${primaryDark ? "text-slate-200" : "text-slate-800"}`}>{art.author.name}</p>
+                        <p className={`text-[10px] ${primaryDark ? "text-slate-500" : "text-slate-400"}`}>{art.author.role}</p>
                       </div>
                     </div>
                   </div>
@@ -589,25 +683,29 @@ export default function App() {
               </div>
             </section>
 
-            {/* FREQUENT CLINIC INQUIRIES FAQS (Section 9) */}
-            <section className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
+            {/* FAQ SECTION */}
+            <section className={`p-6 md:p-8 rounded-3xl border space-y-6 ${
+              primaryDark ? "bg-slate-900 border-slate-700/50" : "bg-white border-blue-100/40 shadow-sm shadow-blue-50/50"
+            }`}>
               <div className="max-w-xl mx-auto text-center space-y-2">
-                <h3 className="text-xl font-bold text-slate-800">Frequently Asked Clinical Inquiries</h3>
-                <p className="text-xs text-slate-500">Find answers explaining virtual admission schedules, copay support, and diagnostic PDF logs.</p>
+                <h3 className={`text-xl font-bold ${primaryDark ? "text-white" : "text-blue-700"}`}>Frequently Asked Questions</h3>
+                <p className={`text-xs ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>Find answers about virtual admissions, copay support, and diagnostic reports.</p>
               </div>
 
               <div className="max-w-3xl mx-auto space-y-2">
                 {GENERAL_FAQS.map((faq, i) => (
-                  <div key={i} className="border-b border-slate-100 last:border-0 pb-3">
+                  <div key={i} className={`border-b last:border-0 pb-3 ${primaryDark ? "border-slate-700/50" : "border-blue-50"}`}>
                     <button
                       onClick={() => setExpandedFaqIndex(expandedFaqIndex === i ? null : i)}
-                      className="w-full py-2.5 text-left text-xs font-bold text-slate-800 hover:text-blue-600 flex items-center justify-between cursor-pointer"
+                      className={`w-full py-2.5 text-left text-xs font-bold flex items-center justify-between cursor-pointer transition ${
+                        primaryDark ? "text-slate-200 hover:text-blue-400" : "text-slate-800 hover:text-blue-600"
+                      }`}
                     >
                       <span>{faq.question}</span>
-                      <ChevronDown className={`w-4 h-4 text-slate-450 transition-transform ${expandedFaqIndex === i ? "rotate-180" : ""}`} />
+                      <ChevronDown className={`w-4 h-4 transition-transform ${primaryDark ? "text-slate-500" : "text-slate-400"} ${expandedFaqIndex === i ? "rotate-180" : ""}`} />
                     </button>
                     {expandedFaqIndex === i && (
-                      <p className="text-xs text-slate-500 pl-1 leading-relaxed mt-1 animate-fadeIn">
+                      <p className={`text-xs pl-1 leading-relaxed mt-1 animate-fadeIn ${primaryDark ? "text-slate-400" : "text-slate-500"}`}>
                         {faq.answer}
                       </p>
                     )}
@@ -621,7 +719,7 @@ export default function App() {
 
         {/* TAB 2: SPECIALISTS SEARCH DIRECTORY */}
         {activeTab === "doctors" && (
-          <div className="animate-fadeIn">
+          <div className={`animate-fadeIn ${primaryDark ? "dark-components" : ""}`}>
             <DoctorSearch
               onSuccessBooking={handleCreateAppointment}
               initialSpecialtyFilter={initialSpecialtyFilter}
@@ -629,9 +727,9 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 3: TRiAGE SYMPTOMS CHECKER */}
+        {/* TAB 3: SYMPTOMS CHECKER */}
         {activeTab === "symptoms" && (
-          <div className="animate-fadeIn">
+          <div className={`animate-fadeIn ${primaryDark ? "dark-components" : ""}`}>
             <SymptomChecker
               onFindDoctor={(spec) => {
                 setInitialSpecialtyFilter(spec);
@@ -641,16 +739,16 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 4: LABORATORY DISPATCH EXPLORER */}
+        {/* TAB 4: REPORT ANALYZER */}
         {activeTab === "labs" && (
-          <div className="animate-fadeIn">
+          <div className={`animate-fadeIn ${primaryDark ? "dark-components" : ""}`}>
             <ReportAnalyzer onAddReport={handleAddReport} />
           </div>
         )}
 
-        {/* TAB 5: PATIET PERSONAL CARE DASHBOARD */}
+        {/* TAB 5: PATIENT DASHBOARD */}
         {activeTab === "dashboard" && (
-          <div className="animate-fadeIn">
+          <div className={`animate-fadeIn ${primaryDark ? "dark-components" : ""}`}>
             <PatientDashboard
               appointments={appointments}
               reports={reports}
@@ -661,24 +759,23 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 6: RED EMERGENCY CHANNELS */}
+        {/* TAB 6: EMERGENCY */}
         {activeTab === "emergency" && (
-          <div className="animate-fadeIn">
+          <div className={`animate-fadeIn ${primaryDark ? "dark-components" : ""}`}>
             <EmergencyHub />
           </div>
         )}
 
       </main>
 
-      {/* FLOAT RED EMERGENCY PORTAL BUTTON (Section 7) */}
+      {/* FLOATING EMERGENCY BUTTON */}
       <div className="fixed bottom-6 right-6 z-40">
         <button
           onClick={() => setShowEmergencyFloating(!showEmergencyFloating)}
-          className="bg-red-500 hover:bg-red-650 text-white rounded-full p-4 shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center relative cursor-pointer group"
+          className="bg-red-500 hover:bg-red-600 text-white rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center relative cursor-pointer group"
           title="Urgent Emergency Assistance"
         >
-          {/* Ringing effect overlay */}
-          <span className="absolute inset-0 rounded-full bg-red-400 opacity-75 animate-ping" />
+          <span className="absolute inset-0 rounded-full bg-red-400 opacity-60 animate-ping" />
           <AlertCircle className="w-6 h-6 shrink-0 relative z-10" />
           <span className="absolute right-full mr-2.5 bg-slate-900 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap shadow-md select-none border border-slate-800">
             Emergency Dispatch Hub
@@ -694,7 +791,9 @@ export default function App() {
       )}
 
       {/* FOOTER */}
-      <footer className="w-full bg-slate-900 text-slate-400 text-xs py-8 mt-12 border-t border-slate-800">
+      <footer className={`w-full text-xs py-8 mt-12 border-t ${
+        primaryDark ? "bg-slate-950 text-slate-400 border-slate-800" : "bg-slate-900 text-slate-400 border-slate-800"
+      }`}>
         <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
@@ -703,14 +802,14 @@ export default function App() {
             </div>
             
             <div className="flex gap-4">
-              <button onClick={() => setActiveTab("home")} className="hover:text-slate-200">Home</button>
-              <button onClick={() => setActiveTab("doctors")} className="hover:text-slate-200">Specialists</button>
-              <button onClick={() => setActiveTab("symptoms")} className="hover:text-slate-200">Symptom Checker</button>
-              <button onClick={() => setActiveTab("dashboard")} className="hover:text-slate-200">Dashboard</button>
+              <button onClick={() => setActiveTab("home")} className="hover:text-blue-400 transition">Home</button>
+              <button onClick={() => setActiveTab("doctors")} className="hover:text-blue-400 transition">Specialists</button>
+              <button onClick={() => setActiveTab("symptoms")} className="hover:text-blue-400 transition">Symptom Checker</button>
+              <button onClick={() => setActiveTab("dashboard")} className="hover:text-blue-400 transition">Dashboard</button>
             </div>
           </div>
 
-          <div className="pt-6 border-t border-slate-800 flex flex-col md:flex-row justify-between text-[11px] text-slate-650">
+          <div className="pt-6 border-t border-slate-800 flex flex-col md:flex-row justify-between text-[11px] text-slate-500">
             <p>© 2026 MediClinic Portal Inc. All rights reserved.</p>
             <p className="flex items-center gap-1.5 shrink-0 select-none">
               <Shield className="w-3.5 h-3.5 text-blue-500" /> Secure SSL Electronic Health Record Management

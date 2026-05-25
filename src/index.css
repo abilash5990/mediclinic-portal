@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -7,19 +7,114 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Custom scrollbar for refined slate panels */
+.animate-slideDown {
+  animation: slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+* {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, box-shadow;
+}
+
+/* Custom scrollbar */
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Dark mode cascading for child components */
+.dark-components {
+  color: #e2e8f0;
+}
+
+.dark-components input,
+.dark-components textarea,
+.dark-components select {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-components input::placeholder,
+.dark-components textarea::placeholder {
+  color: #64748b !important;
+}
+
+.dark-components .bg-white {
+  background-color: #0f172a !important;
+}
+
+.dark-components .bg-slate-50,
+.dark-components .bg-slate-100 {
+  background-color: #1e293b !important;
+}
+
+.dark-components .border-slate-100,
+.dark-components .border-slate-200,
+.dark-components .border-slate-150 {
+  border-color: #334155 !important;
+}
+
+.dark-components .text-slate-900,
+.dark-components .text-slate-800,
+.dark-components .text-slate-850 {
+  color: #f1f5f9 !important;
+}
+
+.dark-components .text-slate-700,
+.dark-components .text-slate-600,
+.dark-components .text-slate-650 {
+  color: #cbd5e1 !important;
+}
+
+.dark-components .text-slate-500,
+.dark-components .text-slate-450,
+.dark-components .text-slate-550 {
+  color: #94a3b8 !important;
+}
+
+.dark-components .text-slate-400 {
+  color: #64748b !important;
+}
+
+.dark-components .shadow-xs,
+.dark-components .shadow-sm {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3) !important;
 }
